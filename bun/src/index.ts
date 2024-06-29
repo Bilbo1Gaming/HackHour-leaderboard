@@ -5,14 +5,7 @@ import schedule from "node-schedule"
 import { getUserInfo, getAllChannelMembers } from "./utils/getUsers"
 import { getStatsForUser } from "./utils/getHack";
 
-const logger = new Logger("hackhour-leaderboard","index",{
-    logWebook:  {
-        enable: true, 
-        url: process.env.DISCORD_WEBHOOK, 
-        form: "discord"
-    }
-    }
-)
+const logger = new Logger("hackhour-leaderboard","index")
 logger.success("Entered Index")
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -27,13 +20,14 @@ db.exec('PRAGMA foreign_keys = ON')
 
 logger.debug(db.query("select 'hello world' as message").get())
 
-// schedule.scheduleJob('*/10 * * * * *', updateTicketCount );
-// schedule.scheduleJob('*/20 * * * * *', updateUserList );
+schedule.scheduleJob('0 0 * * * *', updateTicketCount );
+schedule.scheduleJob('0 30 */2 * * *', updateUserList );
 
-updateTicketCount()
+updateUserList()
 
   async function updateTicketCount(){
-    const currentTime = Math.floor(new Date().getTime() / 1000)
+    try {
+        const currentTime = Math.floor(new Date().getTime() / 1000)
 
     logger.log("Starting Ticket Count Update Process")
 
@@ -42,7 +36,7 @@ updateTicketCount()
     logger.debug("Member Count from DB:", members.length)
 
     for (const member in members) {
-        await sleep(20)
+        await sleep(50)
         let stats = await getStatsForUser(members[member].id)
         logger.debug(stats)
         if (stats == null) continue;
@@ -55,6 +49,10 @@ updateTicketCount()
             $minutes: stats.total
         }))
     }
+    } catch (error) {
+        logger.fatal("Error in index", error)
+    }
+    
 }
   
 async function updateUserList(){

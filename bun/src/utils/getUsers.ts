@@ -2,13 +2,7 @@
 import Logger from "louis-log";
 
 // Initialize the logger
-const logger = new Logger("hackhour-leaderboard", "leaderbot", {
-    logWebook: {
-        enable: true,
-        url: process.env.DISCORD_WEBHOOK,
-        form: "discord"
-    }
-});
+const logger = new Logger("hackhour-leaderboard", "leaderbot");
 
 const channelId = 'C06SBHMQU8G';
 const token = process.env.SLACK_TOKEN;
