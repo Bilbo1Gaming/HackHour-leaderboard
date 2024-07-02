@@ -79,7 +79,10 @@
     <div class="max-w-4xl mx-auto p-6">
         
 
-        <h1 class="text-3xl font-bold text-center mb-8 dark:text-gray-300">Arcade Leaderboard - From Sun Jun 30 2024 20:00:00 GMT+0000</h1>
+        <div class="text-3xl font-bold text-center mb-8 dark:text-gray-300">
+            Arcade Leaderboard
+            <div class="font-semibold" style="font-size: 20px;">Unfortunatly due to API changes and misuse this leaderboard no longer updates. Last update was on Sun Jun 30 2024 20:00:00 GMT+0</div>
+        </div>
 
         <div class="bg-gray-800 p-2 rounded shadow-sm flex flex-wrap items-center justify-between space-x-2 mt-4 relative">
             <div>
@@ -180,7 +183,7 @@
                     document.getElementById("loader").style.display = "none"
                     document.getElementById("end").style.display = "block"
 
-                    return null
+                    return data
                 }
 
                 nextCursor = data.next_cursor

@@ -11,12 +11,12 @@ SELECT row, rank, id, sessions, minutes, realname, displayname, avatar, tz FROM 
     SELECT ROW_NUMBER() OVER (ORDER BY minutes DESC) AS row, DENSE_RANK() OVER (ORDER BY minutes DESC) AS rank, users.id, sessions, minutes, users.realname, users.displayname, users.avatar, users.tz 
     FROM tickets
     LEFT JOIN users ON tickets.user=users.id
-    WHERE unix = 1719698400
+    WHERE unix = 1719781200
     ORDER BY minutes DESC
 ) AS keyset
 WHERE row > 0
 ORDER BY rank
-LIMIT 50;
+LIMIT 50000;
 
 
 SELECT ROWID FROM users;
@@ -29,6 +29,8 @@ SELECT * FROM users WHERE id = U079Z52J6AH;
 
 SELECT * (SELECT DISTINCT unix FROM tickets ORDER BY unix DESC )
 INTO ticketBatches;
+
+DELETE FROM ticketBatches;
 
 SELECT tz, COUNT(*) AS count
 FROM users
@@ -66,4 +68,18 @@ INSERT INTO ticketBatches SELECT DISTINCT unix FROM tickets ORDER BY unix; -- AD
 SELECT unix from ticketBatches ORDER BY unix DESC;
 
 
-UPDATE users SET realname="Orange" , displayname="o" , avatar="txt", tz="ass" WHERE id = "U0266FRGP"
+UPDATE users SET realname="Orange2" , displayname="o2" , avatar="txt", tz="ass" WHERE id = "U0266FRGP";
+
+INSERT INTO tickets
+SELECT * FROM tickets2;
+
+UPDATE tickets2 SET id = null;
+
+SELECT row, rank, id, sessions, minutes, realname, displayname, avatar, tz FROM (
+            SELECT ROW_NUMBER() OVER (ORDER BY minutes DESC) AS row, DENSE_RANK() OVER (ORDER BY minutes DESC) AS rank, users.id, sessions, minutes, users.realname, users.displayname, users.avatar, users.tz 
+            FROM tickets
+            LEFT JOIN users ON tickets.user=users.id
+            WHERE unix = 1719781200
+            ORDER BY minutes DESC
+        ) AS keyset
+        ORDER BY rank;
